@@ -1,51 +1,53 @@
-package org.example.dto;
+package org.example.entity;
+
+import java.math.BigDecimal;
 
 public class ExchangeRate {
 
-    private int id;
+    private Long id;
 
-    private int baseCurrency;
+    private CurrencyEntity baseCurrency;
 
-    private int targetCurrency;
+    private CurrencyEntity targetCurrency;
 
-    private int rate;
+    private BigDecimal rate;
 
-    public ExchangeRate(int id, int baseCurrency, int targetCurrency, int rate) {
+    public ExchangeRate(Long id, CurrencyEntity baseCurrency, CurrencyEntity targetCurrency, BigDecimal rate) {
         this.id = id;
         this.baseCurrency = baseCurrency;
         this.targetCurrency = targetCurrency;
         this.rate = rate;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getBaseCurrency() {
+    public CurrencyEntity getBaseCurrency() {
         return baseCurrency;
     }
 
-    public void setBaseCurrency(int baseCurrency) {
+    public void setBaseCurrency(CurrencyEntity baseCurrency) {
         this.baseCurrency = baseCurrency;
     }
 
-    public int getTargetCurrency() {
+    public CurrencyEntity getTargetCurrency() {
         return targetCurrency;
     }
 
-    public void setTargetCurrency(int targetCurrency) {
+    public void setTargetCurrency(CurrencyEntity targetCurrency) {
         this.targetCurrency = targetCurrency;
     }
 
-    public int getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
-    public void setRate(int rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
 

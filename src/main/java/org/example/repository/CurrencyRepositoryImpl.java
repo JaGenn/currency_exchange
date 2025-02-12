@@ -1,10 +1,9 @@
-package org.example.dao;
+package org.example.repository;
 
 import org.example.DataBase;
 import org.example.entity.CurrencyEntity;
 import org.example.exception.DataBaseOperationErrorException;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +84,6 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
             throw new DataBaseOperationErrorException("Save entity is failed: " + e.getMessage());
         }
     }
-
-
 
     @Override
     public void delete(long id) {

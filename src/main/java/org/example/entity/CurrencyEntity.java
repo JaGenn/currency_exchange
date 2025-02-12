@@ -1,7 +1,7 @@
-package org.example.dto;
+package org.example.entity;
 
-public class Currency {
-    private int id;
+public class CurrencyEntity {
+    private Long id;
 
     private String code;
 
@@ -9,18 +9,24 @@ public class Currency {
 
     private String sign;
 
-    public Currency(int id, String code, String fullName, String sign) {
+    public CurrencyEntity(String code, String fullName, String sign) {
+        this.code = code;
+        this.fullName = fullName;
+        this.sign = sign;
+    }
+
+    public CurrencyEntity(Long id, String code, String fullName, String sign) {
         this.id = id;
         this.code = code;
         this.fullName = fullName;
         this.sign = sign;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

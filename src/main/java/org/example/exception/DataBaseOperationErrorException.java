@@ -1,7 +1,7 @@
 package org.example.exception;
 
-public class DataBaseConnectionErrorException extends RuntimeException{
-    public DataBaseConnectionErrorException(String message) {
+public class DataBaseOperationErrorException extends RuntimeException{
+    public DataBaseOperationErrorException(String message) {
         super(message);
     }
 }

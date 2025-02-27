@@ -13,7 +13,7 @@ import org.example.repository.CurrencyRepositoryImpl;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("")
+@WebServlet("/currencies")
 public class CurrenciesServlet extends HttpServlet {
 
     private static final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
@@ -22,7 +22,7 @@ public class CurrenciesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<CurrencyEntity> currencies = currencyRepository.selectAll();
         req.setAttribute("curList", currencies);
-        req.getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
+        req.getServletContext().getRequestDispatcher("/currency.jsp").forward(req, resp);
     }
 
     @Override
@@ -31,13 +31,13 @@ public class CurrenciesServlet extends HttpServlet {
         String fullName = req.getParameter("fullName");
         String sign = req.getParameter("sign");
         currencyRepository.save(new CurrencyEntity(code, fullName, sign));
-        resp.sendRedirect(req.getContextPath() + "");
+        resp.sendRedirect(req.getContextPath() + "/currencies");
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter("id");
         currencyRepository.delete(Long.parseLong(id));
-        resp.sendRedirect(req.getContextPath() + "");
+        resp.sendRedirect(req.getContextPath() + "/currencies");
     }
 }

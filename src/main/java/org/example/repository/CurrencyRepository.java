@@ -9,10 +9,11 @@ public interface CurrencyRepository {
 
     List<CurrencyEntity> selectAll();
 
-    Optional<CurrencyEntity> getById(long id);
+    Optional<CurrencyEntity> findById(long id);
 
     CurrencyEntity save(CurrencyEntity currency);
 
     void delete(long id);
 
+    Optional<CurrencyEntity> findByCode(String code);
 }

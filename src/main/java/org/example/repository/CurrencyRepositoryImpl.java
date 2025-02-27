@@ -42,7 +42,7 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
     }
 
     @Override
-    public Optional<CurrencyEntity> getById(long id) {
+    public Optional<CurrencyEntity> findById(long id) {
 
         String query = "select * from currencies where id = ?";
 
@@ -104,4 +104,29 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
 
     }
 
+    @Override
+    public Optional<CurrencyEntity> findByCode(String code) {
+
+        String query = "select * from currencies where code = ?";
+
+        try (Connection connection = DataBase.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, code);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+
+                long id = resultSet.getLong("id");
+                String fullName = resultSet.getString("full_name");
+                String sign = resultSet.getString("sign");
+                CurrencyEntity entity = new CurrencyEntity(id, code, fullName, sign);
+                return Optional.of(entity);
+
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new DataBaseOperationErrorException("There is no entity with code " + code + " in DB");
+        }
+    }
 }

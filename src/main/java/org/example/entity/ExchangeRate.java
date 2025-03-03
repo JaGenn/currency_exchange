@@ -19,6 +19,12 @@ public class ExchangeRate {
         this.rate = rate;
     }
 
+    public ExchangeRate(CurrencyEntity baseCurrency, CurrencyEntity targetCurrency, BigDecimal rate) {
+        this.baseCurrency = baseCurrency;
+        this.targetCurrency = targetCurrency;
+        this.rate = rate;
+    }
+
     public Long getId() {
         return id;
     }

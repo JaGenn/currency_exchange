@@ -11,9 +11,11 @@ import java.util.Set;
 public interface ExchangeRateRepository {
 
 
-    Set<ExchangeRate> selectAll();
+    List<ExchangeRate> selectAll();
 
     Optional<ExchangeRate> findByCodes(String baseCurCode, String targetCurCode);
 
+    ExchangeRate save(ExchangeRate exchangeRate);
 
+    void updateRate(ExchangeRate exchangeRate);
 }

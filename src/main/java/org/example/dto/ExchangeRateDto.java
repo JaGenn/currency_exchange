@@ -8,7 +8,6 @@ public class ExchangeRateDto {
 
     private String currencies;
 
-
     private BigDecimal rate;
 
     public ExchangeRateDto(long id, String currencies, BigDecimal rate) {

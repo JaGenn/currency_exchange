@@ -1,7 +1,6 @@
 package org.example.repository;
 
 import org.example.DataBase;
-import org.example.dto.ExchangeRateDto;
 import org.example.entity.CurrencyEntity;
 import org.example.entity.ExchangeRate;
 import org.example.exception.DataBaseOperationErrorException;
@@ -19,9 +18,9 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
     private CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
 
     @Override
-    public Set<ExchangeRate> selectAll() {
+    public List<ExchangeRate> selectAll() {
 
-        Set<ExchangeRate> exchanges = new HashSet<>();
+        List<ExchangeRate> exchanges = new ArrayList<>();
 
         String query = "select * from exchangeRates";
 
@@ -89,6 +88,40 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
             } else {
                 throw new NotFoundException("There was no rate by this codes id Data Base");
             }
+
+        } catch (SQLException e) {
+            throw new DataBaseOperationErrorException(e.getMessage());
+        }
+    }
+
+    @Override
+    public ExchangeRate save(ExchangeRate exchangeRate) {
+        String query = "insert into exchangeRates (base_currency_id, target_currency_id, rate) values (?, ?, ?)";
+
+        try (Connection connection = DataBase.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setLong(1, exchangeRate.getBaseCurrency().getId());
+            statement.setLong(2, exchangeRate.getTargetCurrency().getId());
+            statement.setBigDecimal(3, exchangeRate.getRate());
+            statement.executeUpdate();
+            return exchangeRate;
+        } catch (SQLException e) {
+            throw new DataBaseOperationErrorException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateRate(ExchangeRate exchangeRate) {
+
+        String query = "UPDATE exchangeRates SET rate = ? WHERE id = ?";
+
+        try (Connection connection = DataBase.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setBigDecimal(1, exchangeRate.getRate());
+            statement.setLong(2, exchangeRate.getId());
+            statement.executeUpdate();
 
         } catch (SQLException e) {
             throw new DataBaseOperationErrorException(e.getMessage());

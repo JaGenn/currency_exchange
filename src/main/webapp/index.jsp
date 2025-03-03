@@ -5,7 +5,7 @@
         <form action="/currencies">
             <p><input value="Список валют" type="submit"></p>
         </form>
-        <form action="/exchanges">
+        <form action="/exchangeRates">
                     <p><input value="Обменные курсы" type="submit"></p>
         </form>
 </body>

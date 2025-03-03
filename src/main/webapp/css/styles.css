@@ -1,0 +1,22 @@
+.container {
+                display: flex;
+                align-items: flex-start; /* Выровняет элементы по верхнему краю */
+                align-items: center;
+                gap: 20px;
+            }
+            .curList, .addCurForm {
+                        background: #f9f9f9; /* Светлый фон */
+                        border-radius: 10px;
+                        padding: 20px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+            .curList {
+                margin-right: 40px; /* Отступ между таблицей и формой */
+            }
+
+            body {
+                        display: flex;
+                        justify-content: center; /* Центрирует содержимое по горизонтали */
+                        align-items: center; /* Центрирует по вертикали (если нужно) */
+                        margin: 0;
+                    }

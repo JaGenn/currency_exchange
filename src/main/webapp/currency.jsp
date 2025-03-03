@@ -5,32 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Обменник валют</title>
-    <style>
-            .container {
-                display: flex;
-                align-items: flex-start; /* Выровняет элементы по верхнему краю */
-                align-items: center;
-                gap: 20px;
-            }
-            .curList, .addCurForm {
-                        background: #f9f9f9; /* Светлый фон */
-                        border-radius: 10px;
-                        padding: 20px;
-                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                    }
-            .curList {
-                margin-right: 40px; /* Отступ между таблицей и формой */
-            }
-
-            body {
-                        display: flex;
-                        justify-content: center; /* Центрирует содержимое по горизонтали */
-                        align-items: center; /* Центрирует по вертикали (если нужно) */
-                        margin: 0;
-                    }
-
-        </style>
+    <title>Currencies</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="js/scripts.js"></script>
 </head>
 <body>
 <div class="container">
@@ -54,18 +31,6 @@
                 </td>
             </tr>
         </c:forEach>
-
-        <script>
-            function deleteCurrency(id) {
-                fetch('/currencies?id=' + id, {
-                    method: 'DELETE'
-                })
-                .then(response => {
-                        window.location.reload();
-                })
-                .catch(error => console.error('Ошибка:', error));
-            }
-        </script>
     </table>
 </div>
     <div class="addCurForm">
@@ -77,7 +42,7 @@
             <p>Символ валюты <input name="sign" type="text" placeholder="$" required></p>
             <p><input value="Добавить" type="submit"></p>
         </form>
-        <form action="/exchanges">
+        <form action="/exchangeRates">
             <p><input value="Обменные курсы ->" type="submit"></p>
         </form>
     </div>

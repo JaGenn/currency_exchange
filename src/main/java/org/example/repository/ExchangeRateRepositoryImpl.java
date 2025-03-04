@@ -34,18 +34,13 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
                 long id = resultSet.getLong("id");
                 long baseCurId = resultSet.getLong("base_currency_id");
                 long targetCurId = resultSet.getLong("target_currency_id");
-                CurrencyEntity baseCurrency, targetCurrency;
-                if (currencyRepository.findById(baseCurId).isPresent() &&
-                currencyRepository.findById(targetCurId).isPresent()) {
-                    baseCurrency = currencyRepository.findById(baseCurId).get();
-                    targetCurrency = currencyRepository.findById(targetCurId).get();
-
-                } else {
-                    throw new DataBaseOperationErrorException("Currency not found");
-                }
                 BigDecimal rate = resultSet.getBigDecimal("rate");
+                Optional<CurrencyEntity> baseCurrency = currencyRepository.findById(baseCurId);
+                Optional<CurrencyEntity> targetCurrency = currencyRepository.findById(targetCurId);
+                if (baseCurrency.isPresent() && targetCurrency.isPresent()) {
+                    exchanges.add(new ExchangeRate(id, baseCurrency.get(), targetCurrency.get(), rate));
+                }
 
-                exchanges.add(new ExchangeRate(id, baseCurrency, targetCurrency, rate));
             }
 
         } catch (SQLException e) {
@@ -61,8 +56,8 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
         Optional<CurrencyEntity> targetCur = currencyRepository.findByCode(targetCurCode);
 
         if (baseCur.isPresent() && targetCur.isPresent()) {
-             baseId = baseCur.get().getId();
-             targetId = targetCur.get().getId();
+            baseId = baseCur.get().getId();
+            targetId = targetCur.get().getId();
         } else {
             throw new NotFoundException("There was no currencies by this codes id Data Base");
         }
@@ -70,7 +65,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
         String query = "SELECT * FROM exchangeRates WHERE base_currency_id = ? AND target_currency_id = ?";
 
         try (Connection connection = DataBase.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setLong(1, baseId);
             statement.setLong(2, targetId);
@@ -86,7 +81,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
                 );
                 return Optional.of(exchangeRate);
             } else {
-                throw new NotFoundException("There was no rate by this codes id Data Base");
+                return Optional.empty();
             }
 
         } catch (SQLException e) {
@@ -99,7 +94,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
         String query = "insert into exchangeRates (base_currency_id, target_currency_id, rate) values (?, ?, ?)";
 
         try (Connection connection = DataBase.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setLong(1, exchangeRate.getBaseCurrency().getId());
             statement.setLong(2, exchangeRate.getTargetCurrency().getId());
@@ -117,7 +112,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
         String query = "UPDATE exchangeRates SET rate = ? WHERE id = ?";
 
         try (Connection connection = DataBase.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setBigDecimal(1, exchangeRate.getRate());
             statement.setLong(2, exchangeRate.getId());

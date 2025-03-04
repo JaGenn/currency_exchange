@@ -5,23 +5,26 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.service.ExchangeService;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @WebServlet("/exchange")
 public class ExchangeServlet extends HttpServlet {
+
+    private final ExchangeService exchangeService = new ExchangeService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String from = req.getParameter("from");
         String to = req.getParameter("to");
-        double amount = Double.parseDouble(req.getParameter("amount"));
-        System.out.println(req.getParameter("from"));
-        System.out.println(req.getParameter("to"));
-        System.out.println(req.getParameter("amount"));
-        int result = 1124;
+        BigDecimal amount = new BigDecimal(req.getParameter("amount"));
+        BigDecimal result = exchangeService.exchange(from, to, amount);
         req.setAttribute("result", result);
 
-        // Сохраняем введенные данные, чтобы они остались в форме
+        // Сохраняем введенные данные, чтобы они остались в форме после перезагрузки страницы
         req.setAttribute("fromValue", from);
         req.setAttribute("toValue", to);
         req.setAttribute("amountValue", amount);

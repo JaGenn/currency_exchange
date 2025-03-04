@@ -1,22 +1,30 @@
 .container {
-                display: flex;
-                align-items: flex-start; /* Выровняет элементы по верхнему краю */
-                align-items: center;
-                gap: 20px;
-            }
-            .curList, .addCurForm {
-                        background: #f9f9f9; /* Светлый фон */
-                        border-radius: 10px;
-                        padding: 20px;
-                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                    }
-            .curList {
-                margin-right: 40px; /* Отступ между таблицей и формой */
-            }
+    display: flex;
+    align-items: flex-start;
+    align-items: center;
+    gap: 20px;
+}
 
-            body {
-                        display: flex;
-                        justify-content: center; /* Центрирует содержимое по горизонтали */
-                        align-items: center; /* Центрирует по вертикали (если нужно) */
-                        margin: 0;
-                    }
+.curList, .addForm, .exList, .changeForm {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.curList, .exList {
+    margin-right: 40px;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.centered {
+    text-align: center;
+    vertical-align: middle;
+}
+

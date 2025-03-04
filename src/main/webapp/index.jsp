@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+    <html>
 
-<body>
+    <body>
         <form action="/currencies">
             <p><input value="Список валют" type="submit"></p>
         </form>
         <form action="/exchangeRates">
-                    <p><input value="Обменные курсы" type="submit"></p>
+            <p><input value="Обменные курсы" type="submit"></p>
         </form>
-</body>
-</html>
+    </body>
+
+    </html>

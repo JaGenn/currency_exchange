@@ -3,9 +3,9 @@ package org.example;
 import org.example.dto.ExchangeRateDto;
 import org.example.entity.ExchangeRate;
 
-public class Mapper {
+public class Converter {
 
-    public ExchangeRateDto convertToDto(ExchangeRate exchangeRate) {
+    public static ExchangeRateDto convertToDto(ExchangeRate exchangeRate) {
         return new ExchangeRateDto(exchangeRate.getId(),
                                 exchangeRate.getBaseCurrency().getCode() +
                                 exchangeRate.getTargetCurrency().getCode(),

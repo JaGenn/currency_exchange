@@ -18,4 +18,6 @@ public interface ExchangeRateRepository {
     ExchangeRate save(ExchangeRate exchangeRate);
 
     void updateRate(ExchangeRate exchangeRate);
+
+    void delete(long id);
 }

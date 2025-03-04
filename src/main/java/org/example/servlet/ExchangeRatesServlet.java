@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.Mapper;
+import org.example.Converter;
 import org.example.dto.ExchangeRateDto;
 import org.example.entity.CurrencyEntity;
 import org.example.entity.ExchangeRate;
@@ -17,19 +17,22 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @WebServlet("/exchangeRates")
 public class ExchangeRatesServlet extends HttpServlet {
 
-    private static final ExchangeRateService exchangeRateService = new ExchangeRateService();
-    private static final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
+    private final ExchangeRateService exchangeRateService = new ExchangeRateService();
+    private final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
+
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<ExchangeRateDto> exchangeRates = exchangeRateService.selectAll();
-        req.setAttribute("exList", exchangeRates);
+        List<ExchangeRate> exchangeRates = exchangeRateService.selectAll();
+        List<ExchangeRateDto> exchangeRateDtos = exchangeRates.stream()
+                .map(Converter::convertToDto).collect(Collectors.toList());
+        req.setAttribute("exList", exchangeRateDtos);
 
         List<CurrencyEntity> currencies = currencyRepository.selectAll();
         req.setAttribute("currencies", currencies);
@@ -41,14 +44,20 @@ public class ExchangeRatesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String baseCurCode = req.getParameter("baseCurrency");
         String targetCurCode = req.getParameter("targetCurrency");
-        System.out.println(req.getContextPath());
-        String rate = req.getParameter("rate");
+        BigDecimal rate = new BigDecimal(req.getParameter("rate").replace(",", "."));
+
 
         Optional<CurrencyEntity> base = currencyRepository.findByCode(baseCurCode);
         Optional<CurrencyEntity> target = currencyRepository.findByCode(targetCurCode);
-        exchangeRateService.save(new ExchangeRate(base.get(), target.get(), BigDecimal.valueOf(Long.parseLong(rate))));
+        exchangeRateService.save(new ExchangeRate(base.get(), target.get(), rate));
         resp.sendRedirect(req.getContextPath() + "/exchangeRates");
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Long id = Long.parseLong(req.getParameter("id"));
+        exchangeRateService.delete(id);
+        resp.sendRedirect(req.getContextPath() + "/exchangeRates");
+    }
 
 }

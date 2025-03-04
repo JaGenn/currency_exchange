@@ -95,7 +95,7 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
 
             statement.setLong(1, id);
 
-            int resultSet = statement.executeUpdate();
+            statement.executeUpdate();
 
             System.out.println("Entity deleted");
         } catch (SQLException e) {

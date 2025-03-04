@@ -15,7 +15,7 @@ import java.util.*;
 
 public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
 
-    private CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
+    private final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
 
     @Override
     public List<ExchangeRate> selectAll() {
@@ -125,6 +125,23 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
 
         } catch (SQLException e) {
             throw new DataBaseOperationErrorException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(long id) {
+        String query = "delete from exchangeRates where id = ?";
+
+        try (Connection connection = DataBase.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setLong(1, id);
+
+            statement.executeUpdate();
+
+            System.out.println("Entity deleted");
+        } catch (SQLException e) {
+            throw new DataBaseOperationErrorException("Delete failed: " + e.getMessage());
         }
     }
 }

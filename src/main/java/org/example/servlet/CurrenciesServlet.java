@@ -16,7 +16,7 @@ import java.util.List;
 @WebServlet("/currencies")
 public class CurrenciesServlet extends HttpServlet {
 
-    private static final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
+    private final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

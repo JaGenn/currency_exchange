@@ -1,5 +1,6 @@
 package org.example.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,6 +25,7 @@ public class ExchangeRatesServlet extends HttpServlet {
 
     private final ExchangeRateService exchangeRateService = new ExchangeRateService();
     private final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
 

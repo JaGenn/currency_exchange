@@ -1,5 +1,6 @@
 package org.example.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,6 +22,7 @@ public class ExchangeRateServlet extends HttpServlet {
 
     private final ExchangeRateService exchangeRateService = new ExchangeRateService();
     private final Converter converter = new Converter();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -31,7 +33,9 @@ public class ExchangeRateServlet extends HttpServlet {
         ExchangeRate exchangeRate = exchangeRateService.findByCodes(baseCur, targetCur)
                 .orElseThrow(() -> new NotFoundException("There is no Exchange rate with " + baseCur + targetCur + " codes"));
         ExchangeRateDto exchangeRateDto = converter.convertToDto(exchangeRate);
-        resp.getWriter().println(exchangeRateDto.getRate());
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        objectMapper.writeValue(resp.getWriter(), exchangeRate);
     }
 
     @Override

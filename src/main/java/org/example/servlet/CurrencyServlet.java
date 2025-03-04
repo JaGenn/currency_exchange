@@ -1,5 +1,6 @@
 package org.example.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class CurrencyServlet extends HttpServlet {
 
     private final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -25,6 +27,9 @@ public class CurrencyServlet extends HttpServlet {
         CurrencyEntity currency = currencyRepository.findByCode(code)
                 .orElseThrow(() -> new NotFoundException("Currency with code '" + code + "' not found"));
 
-        resp.getWriter().write(currency.getCode() + " " + currency.getSign());
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        objectMapper.writeValue(resp.getWriter(), currency);
+
     }
 }

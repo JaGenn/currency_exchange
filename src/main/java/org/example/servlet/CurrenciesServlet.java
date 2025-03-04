@@ -1,6 +1,7 @@
 package org.example.servlet;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,11 +19,13 @@ public class CurrenciesServlet extends HttpServlet {
 
     private final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<CurrencyEntity> currencies = currencyRepository.selectAll();
         req.setAttribute("curList", currencies);
         req.getServletContext().getRequestDispatcher("/currency.jsp").forward(req, resp);
+
     }
 
     @Override

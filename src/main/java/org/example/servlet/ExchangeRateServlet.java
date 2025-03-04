@@ -14,8 +14,6 @@ import org.example.service.ExchangeRateService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.security.spec.ECField;
-import java.util.Optional;
 
 @WebServlet("/exchangeRate/*")
 public class ExchangeRateServlet extends HttpServlet {

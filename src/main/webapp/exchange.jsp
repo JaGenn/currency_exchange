@@ -57,7 +57,7 @@
                                         <option value="${currency.code}">${currency.fullName}</option>
                                     </c:forEach>
                                 </datalist>
-                                <p>Rate <input name="rate" step="0.01" type="number" required></p>
+                                <p>Rate <input name="rate" type="number" required></p>
                                 <p><input value="Добавить" type="submit"></p>
                             </form>
 
@@ -67,7 +67,6 @@
                             <form name="exchangeForm" action="/exchange" method="get">
                                 <h1>Обмен валюты</h1>
 
-                                <!-- Поле "From" с сохранением значения -->
                                 <p>Base currency
                                     <input list="currencies" name="from" value="${fromValue}" required>
                                 </p>
@@ -76,14 +75,12 @@
                                     <input list="currencies" name="to" value="${toValue}" required>
                                 </p>
 
-                                <!-- Список валют (достаточно одного datalist) -->
                                 <datalist id="currencies">
                                     <c:forEach var="currency" items="${currencies}">
                                         <option value="${currency.code}">${currency.fullName}</option>
                                     </c:forEach>
                                 </datalist>
 
-                                <!-- Поле "Amount" с сохранением значения -->
                                 <p>Amount
                                     <input name="amount" value="${amountValue}" required>
                                 </p>
@@ -91,13 +88,16 @@
                                 <p><input value="Посчитать" type="submit"></p>
 
                                 <!-- Вывод результата -->
-                                <p>Результат:
+                                <p>Рузультат:
                                     <output id="result">
                                         <c:if test="${not empty result}">${result}</c:if>
                                     </output>
                                 </p>
                             </form>
                         </div>
+                        <form action="/currencies">
+                            <p><input value="<-- Список валют" type="submit"></p>
+                        </form>
                     </div>
                 </div>
 

@@ -11,7 +11,8 @@ import org.example.entity.CurrencyEntity;
 import org.example.entity.ExchangeRate;
 import org.example.repository.CurrencyRepository;
 import org.example.repository.CurrencyRepositoryImpl;
-import org.example.service.ExchangeRateService;
+import org.example.repository.ExchangeRateRepository;
+import org.example.repository.ExchangeRateRepositoryImpl;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @WebServlet("/exchangeRates")
 public class ExchangeRatesServlet extends HttpServlet {
 
-    private final ExchangeRateService exchangeRateService = new ExchangeRateService();
+    private final ExchangeRateRepository exchangeRateRepository = new ExchangeRateRepositoryImpl();
     private final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
 
 
@@ -30,7 +31,7 @@ public class ExchangeRatesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<ExchangeRate> exchangeRates = exchangeRateService.selectAll();
+        List<ExchangeRate> exchangeRates = exchangeRateRepository.selectAll();
         List<ExchangeRateDto> exchangeRateDtos = exchangeRates.stream()
                 .map(Converter::convertToDto).collect(Collectors.toList());
         req.setAttribute("exList", exchangeRateDtos);
@@ -50,14 +51,14 @@ public class ExchangeRatesServlet extends HttpServlet {
 
         Optional<CurrencyEntity> base = currencyRepository.findByCode(baseCurCode);
         Optional<CurrencyEntity> target = currencyRepository.findByCode(targetCurCode);
-        exchangeRateService.save(new ExchangeRate(base.get(), target.get(), rate));
+        exchangeRateRepository.save(new ExchangeRate(base.get(), target.get(), rate));
         resp.sendRedirect(req.getContextPath() + "/exchangeRates");
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Long id = Long.parseLong(req.getParameter("id"));
-        exchangeRateService.delete(id);
+        exchangeRateRepository.delete(id);
         resp.sendRedirect(req.getContextPath() + "/exchangeRates");
     }
 

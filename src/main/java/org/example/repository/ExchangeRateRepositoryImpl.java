@@ -85,7 +85,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
             }
 
         } catch (SQLException e) {
-            throw new DataBaseOperationErrorException(e.getMessage());
+            throw new DataBaseOperationErrorException("Error finding Exchange Rate by codes");
         }
     }
 
@@ -102,7 +102,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
             statement.executeUpdate();
             return exchangeRate;
         } catch (SQLException e) {
-            throw new DataBaseOperationErrorException(e.getMessage());
+            throw new DataBaseOperationErrorException("Save error");
         }
     }
 
@@ -119,7 +119,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DataBaseOperationErrorException(e.getMessage());
+            throw new DataBaseOperationErrorException("Update was failed");
         }
     }
 

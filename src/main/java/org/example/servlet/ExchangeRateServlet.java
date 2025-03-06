@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.Utils.Converter;
-import org.example.dto.ExchangeRateDto;
 import org.example.entity.ExchangeRate;
 import org.example.exception.NotFoundException;
-import org.example.service.ExchangeRateService;
+import org.example.repository.ExchangeRateRepository;
+import org.example.repository.ExchangeRateRepositoryImpl;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @WebServlet("/exchangeRate/*")
 public class ExchangeRateServlet extends HttpServlet {
 
-    private final ExchangeRateService exchangeRateService = new ExchangeRateService();
+    private final ExchangeRateRepository exchangeRateRepository = new ExchangeRateRepositoryImpl();
     private final Converter converter = new Converter();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -27,9 +27,9 @@ public class ExchangeRateServlet extends HttpServlet {
         String baseCur = code.substring(0, 3);
         String targetCur = code.substring(3);
 
-        ExchangeRate exchangeRate = exchangeRateService.findByCodes(baseCur, targetCur)
+        ExchangeRate exchangeRate = exchangeRateRepository.findByCodes(baseCur, targetCur)
                 .orElseThrow(() -> new NotFoundException("There is no Exchange rate with " + baseCur + targetCur + " codes"));
-        ExchangeRateDto exchangeRateDto = converter.convertToDto(exchangeRate);
+
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         objectMapper.writeValue(resp.getWriter(), exchangeRate);
@@ -42,10 +42,10 @@ public class ExchangeRateServlet extends HttpServlet {
         String targetCur = code.substring(3);
         BigDecimal newRateValue = new BigDecimal(req.getParameter("rate").replace(",","."));
 
-        ExchangeRate exchangeRate = exchangeRateService.findByCodes(baseCur, targetCur)
+        ExchangeRate exchangeRate = exchangeRateRepository.findByCodes(baseCur, targetCur)
                 .orElseThrow(() -> new NotFoundException("There is no Exchange rate with " + baseCur + targetCur + " codes"));
         exchangeRate.setRate(newRateValue);
-        exchangeRateService.updateRate(exchangeRate);
+        exchangeRateRepository.updateRate(exchangeRate);
 
         resp.sendRedirect(req.getContextPath() + "/exchangeRates");
 

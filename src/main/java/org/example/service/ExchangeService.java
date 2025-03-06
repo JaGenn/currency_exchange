@@ -2,6 +2,8 @@ package org.example.service;
 
 import org.example.entity.ExchangeRate;
 import org.example.exception.DataBaseOperationErrorException;
+import org.example.repository.ExchangeRateRepository;
+import org.example.repository.ExchangeRateRepositoryImpl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,7 +11,8 @@ import java.util.Optional;
 
 public class ExchangeService {
 
-    private final ExchangeRateService exchangeRateService = new ExchangeRateService();
+    private final ExchangeRateRepository exchangeRateRepository = new ExchangeRateRepositoryImpl();
+
 
 
     public BigDecimal exchange(String from, String to, BigDecimal amount) {
@@ -34,7 +37,7 @@ public class ExchangeService {
 
 
     private BigDecimal findCourse(String from, String to) {
-        Optional<ExchangeRate> exchangeRate = exchangeRateService.findByCodes(from, to);
+        Optional<ExchangeRate> exchangeRate = exchangeRateRepository.findByCodes(from, to);
         if (!exchangeRate.isEmpty()) {
             return exchangeRate.get().getRate();
         } else {
@@ -43,7 +46,7 @@ public class ExchangeService {
     }
 
     private BigDecimal findReverseCourse(String from, String to) {
-        Optional<ExchangeRate> exchangeRate = exchangeRateService.findByCodes(to, from);
+        Optional<ExchangeRate> exchangeRate = exchangeRateRepository.findByCodes(to, from);
         if (!exchangeRate.isEmpty()) {
             return exchangeRate.get().getRate();
         } else {
@@ -53,8 +56,8 @@ public class ExchangeService {
 
     private BigDecimal findCrossCourse(String from, String to) {
         String commonCurrency = "USD";
-        Optional<ExchangeRate> fromExchange = exchangeRateService.findByCodes(commonCurrency, from);
-        Optional<ExchangeRate> toExchange = exchangeRateService.findByCodes(commonCurrency, to);
+        Optional<ExchangeRate> fromExchange = exchangeRateRepository.findByCodes(commonCurrency, from);
+        Optional<ExchangeRate> toExchange = exchangeRateRepository.findByCodes(commonCurrency, to);
 
         if (fromExchange.isEmpty() || toExchange.isEmpty()) {
             throw new DataBaseOperationErrorException("No available exchange rate for " + from + " to " + to);

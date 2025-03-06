@@ -3,6 +3,7 @@ package org.example.repository;
 import org.example.Utils.DataBase;
 import org.example.entity.CurrencyEntity;
 import org.example.exception.DataBaseOperationErrorException;
+import org.example.exception.NotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            throw new DataBaseOperationErrorException("There is no entity with id " + id + " in DB");
+            throw new NotFoundException("There is no entity with id " + id + " in DB");
         }
 
     }
@@ -126,7 +127,7 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            throw new DataBaseOperationErrorException("There is no entity with code " + code + " in DB");
+            throw new NotFoundException("There is no entity with code " + code + " in DB");
         }
     }
 }

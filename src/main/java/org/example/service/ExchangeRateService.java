@@ -14,7 +14,6 @@ import java.util.Optional;
 public class ExchangeRateService {
 
     private final ExchangeRateRepository exchangeRateRepository = new ExchangeRateRepositoryImpl();
-    private final CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
 
     public List<ExchangeRate> selectAll() {
         return exchangeRateRepository.selectAll();

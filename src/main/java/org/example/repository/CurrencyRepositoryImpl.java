@@ -1,6 +1,6 @@
 package org.example.repository;
 
-import org.example.DataBase;
+import org.example.Utils.DataBase;
 import org.example.entity.CurrencyEntity;
 import org.example.exception.DataBaseOperationErrorException;
 
@@ -86,7 +86,7 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
 
         String query = "delete from currencies where id = ?";
 

@@ -57,7 +57,8 @@
                                         <option value="${currency.code}">${currency.fullName}</option>
                                     </c:forEach>
                                 </datalist>
-                                <p>Rate <input name="rate" type="number" required></p>
+
+                                <p>Rate <input name="rate" type="number" step="0.0001" required></p>
                                 <p><input value="Добавить" type="submit"></p>
                             </form>
 

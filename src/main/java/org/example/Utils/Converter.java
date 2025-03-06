@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Utils;
 
 import org.example.dto.ExchangeRateDto;
 import org.example.entity.ExchangeRate;

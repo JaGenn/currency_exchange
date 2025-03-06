@@ -1,6 +1,6 @@
 package org.example.repository;
 
-import org.example.DataBase;
+import org.example.Utils.DataBase;
 import org.example.entity.CurrencyEntity;
 import org.example.entity.ExchangeRate;
 import org.example.exception.DataBaseOperationErrorException;
@@ -124,7 +124,7 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         String query = "delete from exchangeRates where id = ?";
 
         try (Connection connection = DataBase.getConnection();

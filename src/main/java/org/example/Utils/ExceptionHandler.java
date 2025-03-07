@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.ErrorResponseDto;
 import org.example.exception.DataBaseOperationErrorException;
+import org.example.exception.EntityExistException;
+import org.example.exception.InvalidParameterException;
 import org.example.exception.NotFoundException;
 
 import java.io.IOException;
@@ -28,8 +30,14 @@ public class ExceptionHandler extends HttpFilter {
         try {
             super.doFilter(req, res, chain);
         }
+        catch (EntityExistException e) {
+            writeErrorResponse(res, SC_CONFLICT, e);
+        }
         catch (DataBaseOperationErrorException e) {
             writeErrorResponse(res, SC_INTERNAL_SERVER_ERROR, e);
+        }
+        catch (InvalidParameterException e) {
+            writeErrorResponse(res, SC_BAD_REQUEST, e);
         }
         catch (NotFoundException e) {
             writeErrorResponse(res, SC_NOT_FOUND, e);

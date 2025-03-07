@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.Utils.Validator;
 import org.example.entity.CurrencyEntity;
 import org.example.repository.CurrencyRepository;
 import org.example.repository.CurrencyRepositoryImpl;
@@ -32,7 +33,11 @@ public class CurrenciesServlet extends HttpServlet {
         String code = req.getParameter("code");
         String fullName = req.getParameter("fullName");
         String sign = req.getParameter("sign");
-        currencyRepository.save(new CurrencyEntity(code, fullName, sign));
+        CurrencyEntity currency = new CurrencyEntity(code, fullName, sign);
+
+        Validator.validate(currency);
+
+        currencyRepository.save(currency);
         resp.sendRedirect(req.getContextPath() + "/currencies");
     }
 

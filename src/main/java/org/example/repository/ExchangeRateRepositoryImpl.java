@@ -4,7 +4,10 @@ import org.example.Utils.DataBase;
 import org.example.entity.CurrencyEntity;
 import org.example.entity.ExchangeRate;
 import org.example.exception.DataBaseOperationErrorException;
+import org.example.exception.EntityExistException;
 import org.example.exception.NotFoundException;
+import org.sqlite.SQLiteErrorCode;
+import org.sqlite.SQLiteException;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -102,7 +105,19 @@ public class ExchangeRateRepositoryImpl implements ExchangeRateRepository {
             statement.executeUpdate();
             return exchangeRate;
         } catch (SQLException e) {
-            throw new DataBaseOperationErrorException("Save error");
+            if (e instanceof SQLiteException) {
+                SQLiteException exception = (SQLiteException) e;
+                if (exception.getResultCode().code == SQLiteErrorCode.SQLITE_CONSTRAINT_UNIQUE.code) {
+                    throw new EntityExistException(
+                            String.format("Exchange rate '%s' to '%s' already exists",
+                                    exchangeRate.getBaseCurrency().getCode(), exchangeRate.getTargetCurrency().getCode())
+                    );
+                }
+            }
+            throw new DataBaseOperationErrorException(
+                    String.format("Failed to save exchange rate '%s' to '%s' to the database",
+                            exchangeRate.getBaseCurrency().getCode(), exchangeRate.getTargetCurrency().getCode())
+            );
         }
     }
 

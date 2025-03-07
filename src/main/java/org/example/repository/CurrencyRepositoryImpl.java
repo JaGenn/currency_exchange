@@ -3,7 +3,10 @@ package org.example.repository;
 import org.example.Utils.DataBase;
 import org.example.entity.CurrencyEntity;
 import org.example.exception.DataBaseOperationErrorException;
+import org.example.exception.EntityExistException;
 import org.example.exception.NotFoundException;
+import org.sqlite.SQLiteErrorCode;
+import org.sqlite.SQLiteException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -82,6 +85,12 @@ public class CurrencyRepositoryImpl implements CurrencyRepository {
             statement.executeUpdate();
             return currency;
         } catch (SQLException e) {
+            if (e instanceof SQLiteException) {
+                SQLiteException exception = (SQLiteException) e;
+                if (exception.getResultCode().code == SQLiteErrorCode.SQLITE_CONSTRAINT_UNIQUE.code) {
+                    throw new EntityExistException("Currency with code '" + currency.getCode() + "' already exists");
+                }
+            }
             throw new DataBaseOperationErrorException("Save entity is failed: " + e.getMessage());
         }
     }

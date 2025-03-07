@@ -6,9 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.Utils.Converter;
+import org.example.Utils.Validator;
 import org.example.dto.ExchangeRateDto;
+import org.example.dto.ExchangeRequestDto;
 import org.example.entity.CurrencyEntity;
 import org.example.entity.ExchangeRate;
+import org.example.exception.NotFoundException;
 import org.example.repository.CurrencyRepository;
 import org.example.repository.CurrencyRepositoryImpl;
 import org.example.repository.ExchangeRateRepository;
@@ -46,12 +49,17 @@ public class ExchangeRatesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String baseCurCode = req.getParameter("baseCurrency");
         String targetCurCode = req.getParameter("targetCurrency");
-        BigDecimal rate = new BigDecimal(req.getParameter("rate").replace(",", "."));
+        BigDecimal rate = Converter.convertToNumber(req.getParameter("rate").replace(",", "."));
 
+        Validator.validate(new ExchangeRequestDto(baseCurCode, targetCurCode, rate));
 
-        Optional<CurrencyEntity> base = currencyRepository.findByCode(baseCurCode);
-        Optional<CurrencyEntity> target = currencyRepository.findByCode(targetCurCode);
-        exchangeRateRepository.save(new ExchangeRate(base.get(), target.get(), rate));
+        CurrencyEntity base = currencyRepository.findByCode(baseCurCode)
+                .orElseThrow(() -> new NotFoundException("Currency with code '" + baseCurCode + "' not found"));
+        CurrencyEntity target = currencyRepository.findByCode(targetCurCode)
+                .orElseThrow(() -> new NotFoundException("Currency with code '" + targetCurCode + "' not found"));
+
+        exchangeRateRepository.save(new ExchangeRate(base, target, rate));
+
         resp.sendRedirect(req.getContextPath() + "/exchangeRates");
     }
 

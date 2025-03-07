@@ -5,6 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.Utils.Converter;
+import org.example.Utils.Validator;
+import org.example.dto.ExchangeRequestDto;
+import org.example.exception.InvalidParameterException;
 import org.example.service.ExchangeService;
 
 import java.io.IOException;
@@ -20,7 +24,12 @@ public class ExchangeServlet extends HttpServlet {
 
         String from = req.getParameter("from");
         String to = req.getParameter("to");
-        BigDecimal amount = new BigDecimal(req.getParameter("amount"));
+        BigDecimal amount = Converter.convertToNumber(req.getParameter("amount"));
+
+
+        ExchangeRequestDto exchangeRequestDto = new ExchangeRequestDto(from, to, amount);
+        Validator.validate(exchangeRequestDto);
+
         BigDecimal result = exchangeService.exchange(from, to, amount);
         req.setAttribute("result", result);
 
@@ -31,4 +40,6 @@ public class ExchangeServlet extends HttpServlet {
         req.getRequestDispatcher("/exchangeRates").forward(req, resp);
 
     }
+
+
 }

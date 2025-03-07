@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.entity.ExchangeRate;
-import org.example.exception.DataBaseOperationErrorException;
+import org.example.exception.NotFoundException;
 import org.example.repository.ExchangeRateRepository;
 import org.example.repository.ExchangeRateRepositoryImpl;
 
@@ -14,44 +14,31 @@ public class ExchangeService {
     private final ExchangeRateRepository exchangeRateRepository = new ExchangeRateRepositoryImpl();
 
 
-
     public BigDecimal exchange(String from, String to, BigDecimal amount) {
-        BigDecimal result;
-        BigDecimal rate;
+        BigDecimal rate = findCourse(from, to);
 
-        if (findCourse(from, to) != null) {
-            rate = findCourse(from, to);
-            result = amount.multiply(rate);
-            return result;
-        } else if (findReverseCourse(from, to) != null) {
-            rate = findReverseCourse(from, to);
-            result = amount.divide(rate, 3, RoundingMode.HALF_UP);
-            return result;
-        } else {
-            rate = findCrossCourse(from, to);
-            result = amount.multiply(rate);
-            return result;
+        if (rate != null) {
+            return amount.multiply(rate);
         }
 
+        rate = findReverseCourse(from, to);
+        if (rate != null) {
+            return amount.divide(rate, 3, RoundingMode.HALF_UP);
+        }
+
+        rate = findCrossCourse(from, to);
+        return amount.multiply(rate);
     }
 
 
     private BigDecimal findCourse(String from, String to) {
         Optional<ExchangeRate> exchangeRate = exchangeRateRepository.findByCodes(from, to);
-        if (!exchangeRate.isEmpty()) {
-            return exchangeRate.get().getRate();
-        } else {
-            return null;
-        }
+        return (!exchangeRate.isEmpty()) ? exchangeRate.get().getRate() : null;
     }
 
     private BigDecimal findReverseCourse(String from, String to) {
         Optional<ExchangeRate> exchangeRate = exchangeRateRepository.findByCodes(to, from);
-        if (!exchangeRate.isEmpty()) {
-            return exchangeRate.get().getRate();
-        } else {
-            return null;
-        }
+        return (!exchangeRate.isEmpty()) ? exchangeRate.get().getRate() : null;
     }
 
     private BigDecimal findCrossCourse(String from, String to) {
@@ -60,7 +47,7 @@ public class ExchangeService {
         Optional<ExchangeRate> toExchange = exchangeRateRepository.findByCodes(commonCurrency, to);
 
         if (fromExchange.isEmpty() || toExchange.isEmpty()) {
-            throw new DataBaseOperationErrorException("No available exchange rate for " + from + " to " + to);
+            throw new NotFoundException(String.format("Exchange rate '%s' - '%s' not found in the database", from, to));
         }
 
         return toExchange.get().getRate().divide(fromExchange.get().getRate(), 3, RoundingMode.HALF_UP);

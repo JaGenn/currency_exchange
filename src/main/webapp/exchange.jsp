@@ -28,15 +28,17 @@
                                     <td>
                                         <form onsubmit="updateRate(event, '${fn:trim(exRate.currencies)}')"
                                             style="text-align: center">
-                                            <input type="number" name="rate" step="0.01" placeholder="Input new rate"
+                                            <input type="number" name="rate" step="0.0001" placeholder="Input new rate"
                                                 required>
                                             <button type="submit">Update</button>
                                         </form>
                                     </td>
 
+                                    <!--
                                     <td>
                                         <button type="button" onClick="deleteExchangeRate(${exRate.id})">Delete</button>
                                     </td>
+                                    -->
 
 
                                 </tr>

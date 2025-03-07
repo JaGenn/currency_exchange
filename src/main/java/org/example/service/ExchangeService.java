@@ -15,6 +15,11 @@ public class ExchangeService {
 
 
     public BigDecimal exchange(String from, String to, BigDecimal amount) {
+
+        if (from.equals(to)) {
+            return amount;
+        }
+
         BigDecimal rate = findCourse(from, to);
 
         if (rate != null) {

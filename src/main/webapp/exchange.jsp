@@ -85,7 +85,7 @@
                                 </datalist>
 
                                 <p>Amount
-                                    <input name="amount" value="${amountValue}" required>
+                                    <input name="amount" type="number" step="0.01" value="${amountValue}" required>
                                 </p>
 
                                 <p><input value="Посчитать" type="submit"></p>

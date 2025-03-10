@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.Utils.Converter;
 import org.example.Utils.Validator;
+import org.example.dto.ExchangeRequestDto;
 import org.example.entity.ExchangeRate;
 import org.example.exception.InvalidParameterException;
 import org.example.exception.NotFoundException;
@@ -54,11 +55,9 @@ public class ExchangeRateServlet extends HttpServlet {
 
         String baseCur = code.substring(0, 3);
         String targetCur = code.substring(3);
-
-        Validator.validateCurrencyCode(baseCur);
-        Validator.validateCurrencyCode(targetCur);
-
         BigDecimal newRateValue = Converter.convertToNumber(req.getParameter("rate").replace(",","."));
+
+        Validator.validate(new ExchangeRequestDto(baseCur, targetCur, newRateValue));
 
         ExchangeRate exchangeRate = exchangeRateRepository.findByCodes(baseCur, targetCur)
                 .orElseThrow(() -> new NotFoundException("There is no Exchange rate with " + baseCur + targetCur + " codes"));

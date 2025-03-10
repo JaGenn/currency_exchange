@@ -50,7 +50,7 @@ public class Validator {
             throw new InvalidParameterException("Missing parameter - amount");
         }
 
-        if (amount.compareTo(new BigDecimal("0.0")) < 0) {
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new InvalidParameterException("Invalid parameter - amount must be non-negative");
         }
 

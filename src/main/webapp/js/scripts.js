@@ -1,5 +1,5 @@
 function deleteCurrency(id) {
-    fetch('/currencies?id=' + id, {
+    fetch('currencies?id=' + id, {
         method: 'DELETE'
     })
         .then(response => {
@@ -15,7 +15,7 @@ function updateRate(event, currencyCode) {
     const rate = event.target.querySelector('input[name="rate"]').value;
     const encodedCurrency = encodeURIComponent(currencyCode.trim()); // Удаляем лишние пробелы
 
-    fetch(`/exchangeRate/${encodedCurrency}`, {
+    fetch(`exchangeRate/${encodedCurrency}`, {
         method: "POST",
         body: new URLSearchParams({ rate: rate, currencies: currencyCode }),
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
@@ -30,7 +30,7 @@ function updateRate(event, currencyCode) {
 }
 
 function deleteExchangeRate(id) {
-    fetch('/exchangeRates?id=' + id, {
+    fetch('exchangeRates?id=' + id, {
         method: 'DELETE'
     })
     .then(response => {

@@ -44,7 +44,7 @@
                         <p>Символ валюты <input name="sign" type="text" placeholder="$" required></p>
                         <p><input value="Добавить" type="submit"></p>
                     </form>
-                    <form action="/exchangeRates">
+                    <form action="exchangeRates">
                         <p><input value="Обменные курсы ->" type="submit"></p>
                     </form>
                 </div>

@@ -48,7 +48,7 @@
                     </div>
                     <div class="forms">
                         <div class="addForm">
-                            <form name="AddExForm" action="/exchangeRates" method="post">
+                            <form name="AddExForm" action="exchangeRates" method="post">
                                 <h1>Добавить валютную пару</h1>
                                 <p>Base currency <input list="currencies" name="baseCurrency" required></p>
                                 
@@ -67,7 +67,7 @@
                         </div>
                         <br><br>
                         <div class="changeForm">
-                            <form name="exchangeForm" action="/exchange" method="get">
+                            <form name="exchangeForm" action="exchange" method="get">
                                 <h1>Обмен валюты</h1>
 
                                 <p>Base currency
@@ -98,7 +98,7 @@
                                 </p>
                             </form>
                         </div>
-                        <form action="/currencies">
+                        <form action="currencies">
                             <p><input value="<-- Список валют" type="submit"></p>
                         </form>
                     </div>

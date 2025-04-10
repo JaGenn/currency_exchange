@@ -17,3 +17,5 @@ REST API для описания валют и обменных курсов. П
 5. Деплой на удалённый сервер
 
 Полное ТЗ на странице Java роадмапа - https://zhukovsd.github.io/java-backend-learning-course/projects/currency-exchange/
+
+Чтобы запустить проект у себя локально достаточно его склонировать к себе в IDEA. Для локального развертывания я использовал плагин SmartTomcat. Проект запускается через путь - lacalhost:8080/currency_exchange/
